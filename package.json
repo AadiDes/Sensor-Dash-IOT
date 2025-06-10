@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "tailwindcss": "^4.1.8"
+  },
+  "dependencies": {
+    "mqtt": "^5.13.1"
   }
 }

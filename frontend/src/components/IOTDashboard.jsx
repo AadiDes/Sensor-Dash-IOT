@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
+import mqtt from "mqtt";
 
 export default function IOTDashboard() {
   const [readings, setReadings] = useState([]);
@@ -13,6 +14,9 @@ export default function IOTDashboard() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   
+  // MQTT client ref to persist across renders
+  const mqttClient = useRef(null);
+
   // Helper to set preset ranges
   const setPreset = (days) => {
     // Set end date to tomorrow to include today's readings
@@ -61,6 +65,50 @@ export default function IOTDashboard() {
     }
     // eslint-disable-next-line
   }, [startDate, endDate]);
+
+  // --- MQTT Real-time Integration ---
+  useEffect(() => {
+    // Connect to EMQX public broker over WebSocket
+    const client = mqtt.connect("ws://broker.emqx.io:8083/mqtt", {
+      username: "emqx",
+      password: "public"
+    });
+    mqttClient.current = client;
+
+    client.on("connect", () => {
+      console.log("Connected to EMQX via WebSocket");
+      client.subscribe("TEMP/SUB/#");
+    });
+
+    client.on("message", (topic, message) => {
+      // Parse the message (try JSON, fallback to regex)
+      let parsed;
+      try {
+        parsed = JSON.parse(message.toString());
+      } catch {
+        const matches = message.toString().match(/([-+]?\d*\.?\d+)/g);
+        parsed = {
+          temperature: matches && matches[0] ? parseFloat(matches[0]) : null,
+          humidity: matches && matches[1] ? parseFloat(matches[1]) : null
+        };
+      }
+      // Create a new reading object
+      const newReading = {
+        timestamp: new Date().toLocaleString(),
+        readings: {
+          temperature: { value: parsed.temperature, unit: "C" },
+          humidity: { value: parsed.humidity, unit: "%" }
+        },
+        sensor_id: topic.split("/").pop()
+      };
+      // Add to readings (prepend, keep max 100)
+      setReadings(prev => [newReading, ...prev].slice(0, 100));
+    });
+
+    return () => {
+      client.end();
+    };
+  }, []);
 
   // Prepare data for the chart
   const labels = readings.map(r => r.timestamp).reverse(); // oldest to newest

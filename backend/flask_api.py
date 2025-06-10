@@ -6,9 +6,14 @@ from pymongo import MongoClient
 from flask_cors import CORS
 from bson import ObjectId
 from datetime import datetime
+import logging
 
 app = Flask(__name__)
 CORS(app)  # Allow all origins (you can restrict later)
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # --- Configuration ---
 MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://AadiDes:manager@clustera.ls7ppiu.mongodb.net/?retryWrites=true&w=majority&appName=ClusterA")
@@ -31,10 +36,16 @@ def clean_doc(doc):
 # --- Routes ---
 @app.route("/api/readings", methods=["GET"])
 def get_all_readings():
+    """Get all sensor readings with pagination."""
     try:
-        docs = collection.find().sort("timestamp", -1).limit(100)
+        page = int(request.args.get("page", 1))
+        page_size = int(request.args.get("page_size", 50))
+        skip = (page - 1) * page_size
+        docs = collection.find().sort("timestamp", -1).skip(skip).limit(page_size)
+        logger.info(f"Fetched {docs.count()} readings (page {page})")
         return jsonify([clean_doc(doc) for doc in docs])
     except Exception as e:
+        logger.error(f"Error in get_all_readings: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/readings/latest/<sensor_id>", methods=["GET"])
@@ -61,14 +72,14 @@ def parse_date(date_str):
 
 @app.route("/api/readings/<sensor_id>", methods=["GET"])
 def get_sensor_readings(sensor_id):
+    """Get readings for a specific sensor with pagination and date filtering."""
     try:
-        # 🔎 Read date filters from query params
         start_str = request.args.get("start")
         end_str = request.args.get("end")
-
+        page = int(request.args.get("page", 1))
+        page_size = int(request.args.get("page_size", 50))
+        skip = (page - 1) * page_size
         query = {"sensor_id": sensor_id}
-
-        # ⏱ Build date filter
         if start_str:
             start = parse_date(start_str)
             if start:
@@ -80,10 +91,12 @@ def get_sensor_readings(sensor_id):
                     query["timestamp"]["$lte"] = end
                 else:
                     query["timestamp"] = {"$lte": end}
-
-        docs = collection.find(query).sort("timestamp", -1).limit(100)
-        return jsonify([clean_doc(doc) for doc in docs])
+        docs = collection.find(query).sort("timestamp", -1).skip(skip).limit(page_size)
+        docs_list = list(docs)
+        logger.info(f"Fetched {len(docs_list)} readings for sensor {sensor_id} (page {page})")
+        return jsonify([clean_doc(doc) for doc in docs_list])
     except Exception as e:
+        logger.error(f"Error in get_sensor_readings: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/test", methods=["GET"])

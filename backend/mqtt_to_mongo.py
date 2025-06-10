@@ -15,6 +15,7 @@ Run:
 """
 
 import warnings
+import time
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -112,41 +113,45 @@ def parse_sensor_data(message: str) -> dict:
         return {"Temperature": None, "Humidity": None}
 
 
+def safe_insert(doc, retries=3, delay=2):
+    """Insert a document into MongoDB with retry logic."""
+    for attempt in range(retries):
+        try:
+            readings_col.insert_one(doc)
+            logger.info(f"[MongoDB] Inserted reading for {doc.get('sensor_id', 'unknown')}")
+            return True
+        except Exception as exc:
+            logger.error(f"[MongoDB] Insert failed (attempt {attempt+1}): {exc}")
+            time.sleep(delay)
+    logger.error("[MongoDB] All insert attempts failed.")
+    return False
+
+
 def build_reading_document(topic: str, raw_message: str) -> dict:
-    """Build a document for the sensor_readings collection."""
+    """Build a document for the sensor_readings collection. Validates and sanitizes data."""
     try:
-        # Parse the raw message into sensor readings
         readings = parse_sensor_data(raw_message)
-
-        # Use system time
         system_time = datetime.now()
-
-        # Extract sensor ID from topic, use default if not found
         sensor_id = topic.split("/")[-1] if "/" in topic else topic
-        if not sensor_id:  # If sensor_id is empty
-            sensor_id = "device1"  # Use default sensor ID
-
-        # Build the document
+        if not sensor_id or not isinstance(sensor_id, str):
+            sensor_id = "device1"
+        # Validate readings
+        temp = readings["Temperature"]
+        hum = readings["Humidity"]
+        if temp is None or hum is None:
+            logger.warning(f"Invalid r`eading: temp={temp}, hum={hum}, topic={topic}, message={raw_message}")
+            return None
         doc = {
             "timestamp": system_time,
-            "sensor_id": sensor_id,
+            "sensor_id": sensor_id.strip(),
             "readings": {
-                "temperature": {
-                    "value": readings["Temperature"],
-                    "unit": "C"
-                },
-                "humidity": {
-                    "value": readings["Humidity"],
-                    "unit": "%"
-                }
+                "temperature": {"value": temp, "unit": "C"},
+                "humidity": {"value": hum, "unit": "%"}
             }
         }
-
-        # Add location metadata if available
         sensor = sensors_col.find_one({"sensor_id": sensor_id})
         if sensor:
             doc["location"] = sensor.get("location", {})
-
         return doc
     except Exception as e:
         logger.error(f"Error building document: {str(e)}")
@@ -166,19 +171,12 @@ def on_connect(client, userdata, flags, rc, properties=None):
 
 
 def on_message(client, userdata, msg):
-    # Use system time
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     raw_message = msg.payload.decode()
-    logger.info("[%s] Data on '%s': %s", timestamp, msg.topic, raw_message)
-
-    # ---------------------- MongoDB insert ---------------------- #
+    logger.info(f"[{timestamp}] Data on '{msg.topic}': {raw_message}")
     doc = build_reading_document(msg.topic, raw_message)
     if doc:
-        try:
-            readings_col.insert_one(doc)
-            logger.debug("[MongoDB] Inserted reading for %s", doc["sensor_id"])
-        except Exception as exc:
-            logger.error("[MongoDB] Insert failed: %s", exc)
+        safe_insert(doc)
 
     # ---------------------- Optional local logs ---------------------- #
     try:
@@ -220,7 +218,6 @@ def on_message(client, userdata, msg):
                 ])
         except IOError as exc:
             logger.error("Error writing CSV: %s", exc)
-
 
 
 def on_disconnect(client, userdata, rc, properties=None):
