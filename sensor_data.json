@@ -1,0 +1,1682 @@
+[
+  {
+    "timestamp": "2025-06-10 10:37:58",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.45,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bdaec2624eb4be81b8ef"
+  },
+  {
+    "timestamp": "2025-06-10 10:38:22",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.41,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bdc6c2624eb4be81b8f0"
+  },
+  {
+    "timestamp": "2025-06-10 10:38:46",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.95,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.32,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bddec2624eb4be81b8f1"
+  },
+  {
+    "timestamp": "2025-06-10 10:39:10",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.94,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.19,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bdf6c2624eb4be81b8f2"
+  },
+  {
+    "timestamp": "2025-06-10 10:39:34",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.23,
+        "unit": "%"
+      }
+    },
+    "_id": "6847be0ec2624eb4be81b8f3"
+  },
+  {
+    "timestamp": "2025-06-10 10:39:58",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.28,
+        "unit": "%"
+      }
+    },
+    "_id": "6847be26c2624eb4be81b8f4"
+  },
+  {
+    "timestamp": "2025-06-10 10:40:22",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.29,
+        "unit": "%"
+      }
+    },
+    "_id": "6847be3ec2624eb4be81b8f5"
+  },
+  {
+    "timestamp": "2025-06-10 10:40:46",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.89,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.33,
+        "unit": "%"
+      }
+    },
+    "_id": "6847be56c2624eb4be81b8f6"
+  },
+  {
+    "timestamp": "2025-06-10 10:41:10",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.24,
+        "unit": "%"
+      }
+    },
+    "_id": "6847be6ec2624eb4be81b8f7"
+  },
+  {
+    "timestamp": "2025-06-10 10:41:34",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.2,
+        "unit": "%"
+      }
+    },
+    "_id": "6847be86c2624eb4be81b8f8"
+  },
+  {
+    "timestamp": "2025-06-10 10:41:58",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.17,
+        "unit": "%"
+      }
+    },
+    "_id": "6847be9ec2624eb4be81b8f9"
+  },
+  {
+    "timestamp": "2025-06-10 10:42:22",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.14,
+        "unit": "%"
+      }
+    },
+    "_id": "6847beb6c2624eb4be81b8fa"
+  },
+  {
+    "timestamp": "2025-06-10 10:42:46",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.11,
+        "unit": "%"
+      }
+    },
+    "_id": "6847becec2624eb4be81b8fb"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:18",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.06,
+        "unit": "%"
+      }
+    },
+    "_id": "6847beefc2624eb4be81b8fc"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:22",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.06,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bef2c2624eb4be81b8fd"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:46",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf0ac2624eb4be81b8fe"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:48",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf0cc2624eb4be81b8ff"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:58",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf17c2624eb4be81b900"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:59",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf17c2624eb4be81b901"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:59",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf17c2624eb4be81b902"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:59",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf17c2624eb4be81b903"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:59",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf17c2624eb4be81b904"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:59",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf17c2624eb4be81b905"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:59",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf17c2624eb4be81b906"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:59",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf17c2624eb4be81b907"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:59",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf17c2624eb4be81b908"
+  },
+  {
+    "timestamp": "2025-06-10 10:43:59",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.92,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf17c2624eb4be81b909"
+  },
+  {
+    "timestamp": "2025-06-10 10:44:10",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.01,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf22c2624eb4be81b90a"
+  },
+  {
+    "timestamp": "2025-06-10 10:44:34",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 71.03,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf3ac2624eb4be81b90b"
+  },
+  {
+    "timestamp": "2025-06-10 10:44:58",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.91,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf52c2624eb4be81b90c"
+  },
+  {
+    "timestamp": "2025-06-10 10:45:21",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.88,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf69c2624eb4be81b90d"
+  },
+  {
+    "timestamp": "2025-06-10 10:45:45",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.86,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf81c2624eb4be81b90e"
+  },
+  {
+    "timestamp": "2025-06-10 10:46:09",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.74,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bf99c2624eb4be81b90f"
+  },
+  {
+    "timestamp": "2025-06-10 10:46:33",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.7,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bfb1c2624eb4be81b910"
+  },
+  {
+    "timestamp": "2025-06-10 10:46:57",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.64,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bfc9c2624eb4be81b911"
+  },
+  {
+    "timestamp": "2025-06-10 10:47:21",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.62,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bfe1c2624eb4be81b912"
+  },
+  {
+    "timestamp": "2025-06-10 10:47:45",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.9,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.56,
+        "unit": "%"
+      }
+    },
+    "_id": "6847bff9c2624eb4be81b913"
+  },
+  {
+    "timestamp": "2025-06-10 10:48:09",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.51,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c011c2624eb4be81b914"
+  },
+  {
+    "timestamp": "2025-06-10 10:48:33",
+    "sensor_id": "",
+    "readings": {
+      "temperature": {
+        "value": 29.91,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.42,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c029c2624eb4be81b915"
+  },
+  {
+    "timestamp": "2025-06-10 10:49:45",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.89,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.62,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c0718b857f1a79a5af23"
+  },
+  {
+    "timestamp": "2025-06-10 10:50:08",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.94,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.28,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c0898b857f1a79a5af24"
+  },
+  {
+    "timestamp": "2025-06-10 10:50:32",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.95,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.23,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c0a08b857f1a79a5af25"
+  },
+  {
+    "timestamp": "2025-06-10 10:50:56",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.95,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.24,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c0b88b857f1a79a5af26"
+  },
+  {
+    "timestamp": "2025-06-10 10:51:44",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.95,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.11,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c0e8357fec0e94829ded"
+  },
+  {
+    "timestamp": "2025-06-10 10:52:08",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.95,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.03,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c100357fec0e94829dee"
+  },
+  {
+    "timestamp": "2025-06-10 10:52:32",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.96,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c118357fec0e94829def"
+  },
+  {
+    "timestamp": "2025-06-10 10:52:56",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.97,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 69.92,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c130357fec0e94829df0"
+  },
+  {
+    "timestamp": "2025-06-10 10:53:20",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.97,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 69.88,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c148357fec0e94829df1"
+  },
+  {
+    "timestamp": "2025-06-10 10:53:44",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.98,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 69.85,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c160357fec0e94829df2"
+  },
+  {
+    "timestamp": "2025-06-10 10:54:08",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.99,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 69.69,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c178357fec0e94829df3"
+  },
+  {
+    "timestamp": "2025-06-10 10:54:32",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 29.99,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 69.63,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c190357fec0e94829df4"
+  },
+  {
+    "timestamp": "2025-06-10 10:54:56",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.0,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 69.43,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c1a8357fec0e94829df5"
+  },
+  {
+    "timestamp": "2025-06-10 10:55:20",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.0,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 69.39,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c1c0357fec0e94829df6"
+  },
+  {
+    "timestamp": "2025-06-10 10:55:44",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.0,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 69.29,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c1d8357fec0e94829df7"
+  },
+  {
+    "timestamp": "2025-06-10 10:56:08",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.01,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 69.13,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c1f0357fec0e94829df8"
+  },
+  {
+    "timestamp": "2025-06-10 10:56:32",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.01,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 69.01,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c208357fec0e94829df9"
+  },
+  {
+    "timestamp": "2025-06-10 10:56:56",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.0,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.97,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c220357fec0e94829dfa"
+  },
+  {
+    "timestamp": "2025-06-10 10:57:20",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.02,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.83,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c238357fec0e94829dfb"
+  },
+  {
+    "timestamp": "2025-06-10 10:57:44",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.47,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c250357fec0e94829dfc"
+  },
+  {
+    "timestamp": "2025-06-10 10:57:45",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.47,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c251357fec0e94829dfd"
+  },
+  {
+    "timestamp": "2025-06-10 10:58:08",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.39,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c268357fec0e94829dfe"
+  },
+  {
+    "timestamp": "2025-06-10 10:58:32",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.4,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c280357fec0e94829dff"
+  },
+  {
+    "timestamp": "2025-06-10 10:58:56",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.37,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c298357fec0e94829e00"
+  },
+  {
+    "timestamp": "2025-06-10 10:59:20",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.39,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c2b0357fec0e94829e01"
+  },
+  {
+    "timestamp": "2025-06-10 10:59:44",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.34,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c2c8357fec0e94829e02"
+  },
+  {
+    "timestamp": "2025-06-10 11:00:08",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.25,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c2e0357fec0e94829e03"
+  },
+  {
+    "timestamp": "2025-06-10 11:00:32",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.04,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.24,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c2f8357fec0e94829e04"
+  },
+  {
+    "timestamp": "2025-06-10 11:00:56",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.18,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c310357fec0e94829e05"
+  },
+  {
+    "timestamp": "2025-06-10 11:01:20",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.09,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c328357fec0e94829e06"
+  },
+  {
+    "timestamp": "2025-06-10 11:01:44",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.05,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c340357fec0e94829e07"
+  },
+  {
+    "timestamp": "2025-06-10 11:02:08",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 68.01,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c358357fec0e94829e08"
+  },
+  {
+    "timestamp": "2025-06-10 11:02:32",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.02,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.93,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c370357fec0e94829e09"
+  },
+  {
+    "timestamp": "2025-06-10 11:02:56",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.02,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.93,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c388357fec0e94829e0a"
+  },
+  {
+    "timestamp": "2025-06-10 11:03:20",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.9,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c3a0357fec0e94829e0b"
+  },
+  {
+    "timestamp": "2025-06-10 11:03:44",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.85,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c3b9357fec0e94829e0c"
+  },
+  {
+    "timestamp": "2025-06-10 11:04:09",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.84,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c3d1357fec0e94829e0d"
+  },
+  {
+    "timestamp": "2025-06-10 11:04:33",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.79,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c3e9357fec0e94829e0e"
+  },
+  {
+    "timestamp": "2025-06-10 11:04:57",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.03,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.71,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c401357fec0e94829e0f"
+  },
+  {
+    "timestamp": "2025-06-10 11:05:21",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.04,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.73,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c419357fec0e94829e10"
+  },
+  {
+    "timestamp": "2025-06-10 11:05:45",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.04,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.59,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c431357fec0e94829e11"
+  },
+  {
+    "timestamp": "2025-06-10 11:06:09",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.05,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.59,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c449357fec0e94829e12"
+  },
+  {
+    "timestamp": "2025-06-10 11:06:33",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.05,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.54,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c461357fec0e94829e13"
+  },
+  {
+    "timestamp": "2025-06-10 11:06:57",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.05,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.49,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c479357fec0e94829e14"
+  },
+  {
+    "timestamp": "2025-06-10 11:07:21",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.05,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.47,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c491357fec0e94829e15"
+  },
+  {
+    "timestamp": "2025-06-10 11:07:45",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.06,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.45,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c4a9357fec0e94829e16"
+  },
+  {
+    "timestamp": "2025-06-10 11:08:09",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.05,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.39,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c4c1357fec0e94829e17"
+  },
+  {
+    "timestamp": "2025-06-10 11:08:33",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.05,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.39,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c4d9357fec0e94829e18"
+  },
+  {
+    "timestamp": "2025-06-10 11:08:57",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.06,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.39,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c4f1357fec0e94829e19"
+  },
+  {
+    "timestamp": "2025-06-10 11:09:21",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.07,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.35,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c50a357fec0e94829e1a"
+  },
+  {
+    "timestamp": "2025-06-10 11:09:46",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.08,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.33,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c522357fec0e94829e1b"
+  },
+  {
+    "timestamp": "2025-06-10 11:10:10",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.08,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.29,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c53a357fec0e94829e1c"
+  },
+  {
+    "timestamp": "2025-06-10 11:10:34",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.09,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.18,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c552357fec0e94829e1d"
+  },
+  {
+    "timestamp": "2025-06-10 11:10:58",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.09,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.14,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c56a357fec0e94829e1e"
+  },
+  {
+    "timestamp": "2025-06-10 11:11:22",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.1,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.13,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c582357fec0e94829e1f"
+  },
+  {
+    "timestamp": "2025-06-10 11:11:46",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.11,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.11,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c59a357fec0e94829e20"
+  },
+  {
+    "timestamp": "2025-06-10 11:12:10",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.11,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.06,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c5b2357fec0e94829e21"
+  },
+  {
+    "timestamp": "2025-06-10 11:12:34",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.11,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 67.02,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c5ca357fec0e94829e22"
+  },
+  {
+    "timestamp": "2025-06-10 11:12:59",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.11,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.94,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c5e3357fec0e94829e23"
+  },
+  {
+    "timestamp": "2025-06-10 11:13:23",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.11,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.95,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c5fb357fec0e94829e24"
+  },
+  {
+    "timestamp": "2025-06-10 11:13:47",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.12,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.91,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c613357fec0e94829e25"
+  },
+  {
+    "timestamp": "2025-06-10 11:14:11",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.11,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.87,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c62b357fec0e94829e26"
+  },
+  {
+    "timestamp": "2025-06-10 11:14:35",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.12,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.87,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c643357fec0e94829e27"
+  },
+  {
+    "timestamp": "2025-06-10 11:14:59",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.11,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.78,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c65b357fec0e94829e28"
+  },
+  {
+    "timestamp": "2025-06-10 11:15:23",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.1,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.8,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c673357fec0e94829e29"
+  },
+  {
+    "timestamp": "2025-06-10 11:15:47",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.11,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.78,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c68b357fec0e94829e2a"
+  },
+  {
+    "timestamp": "2025-06-10 11:16:12",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.12,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.75,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c6a4357fec0e94829e2b"
+  },
+  {
+    "timestamp": "2025-06-10 11:16:36",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.13,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.69,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c6bc357fec0e94829e2c"
+  },
+  {
+    "timestamp": "2025-06-10 11:17:00",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.13,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.59,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c6d4357fec0e94829e2d"
+  },
+  {
+    "timestamp": "2025-06-10 11:17:24",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.13,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.55,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c6ec357fec0e94829e2e"
+  },
+  {
+    "timestamp": "2025-06-10 11:17:48",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.13,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.53,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c704357fec0e94829e2f"
+  },
+  {
+    "timestamp": "2025-06-10 11:18:12",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.13,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.49,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c71c357fec0e94829e30"
+  },
+  {
+    "timestamp": "2025-06-10 11:18:37",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.13,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 66.46,
+        "unit": "%"
+      }
+    },
+    "_id": "6847c735357fec0e94829e31"
+  }
+]

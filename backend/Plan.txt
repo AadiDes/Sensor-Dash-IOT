@@ -1,0 +1,443 @@
+# MongoDB Dairy IoT System - Deployment Plan
+
+## 🎯 System Overview
+
+This deployment plan covers the migration from SQLite to MongoDB for a dairy farming IoT sensor data collection system. The system monitors environmental conditions (temperature, humidity, pressure) to optimize cow comfort and milk production.
+
+## 📋 Prerequisites
+
+### Software Requirements
+- **Python 3.8+**
+- **MongoDB 4.4+** (Community or Enterprise)
+- **MQTT Broker Access** (currently using broker.emqx.io)
+
+### Python Dependencies
+```bash
+pip install pymongo paho-mqtt pytz
+```
+
+## 🏗️ Database Schema Design
+
+### Collections Structure
+
+#### 1. `sensor_readings` Collection
+```javascript
+{
+  "_id": ObjectId,
+  "sensor_id": "SENSOR_001",
+  "timestamp": ISODate,
+  "location": {
+    "farm_id": "FARM_001",
+    "barn_section": "A1", 
+    "coordinates": {"lat": 18.5204, "lng": 73.8567}
+  },
+  "readings": {
+    "temperature": {"value": 24.5, "unit": "celsius"},
+    "humidity": {"value": 65.2, "unit": "percent"},
+    "pressure": {"value": 1013.25, "unit": "hPa"}
+  },
+  "metadata": {
+    "message_topic": "TEMP/SUB/SENSOR_001",
+    "raw_message": "T:24.5C H:65.2%",
+    "data_quality": "good",
+    "created_at": ISODate
+  }
+}
+```
+
+#### 2. `sensors` Collection (Master Data)
+```javascript
+{
+  "_id": "SENSOR_001",
+  "sensor_type": "environmental",
+  "capabilities": ["temperature", "humidity", "pressure"],
+  "location": {
+    "farm_id": "FARM_001",
+    "barn_section": "A1",
+    "description": "Cow barn environmental monitoring"
+  },
+  "configuration": {
+    "sampling_interval": 30,
+    "thresholds": {
+      "temperature": {"min": 18, "max": 28, "optimal": [20, 25]},
+      "humidity": {"min": 40, "max": 80, "optimal": [50, 70]}
+    }
+  },
+  "status": "active"
+}
+```
+
+## 🚀 Deployment Steps
+
+### Step 1: MongoDB Installation
+
+#### Local Development
+```bash
+# Ubuntu/Debian
+sudo apt-get install mongodb
+
+# macOS with Homebrew
+brew install mongodb-community
+
+# Start MongoDB service
+sudo systemctl start mongod
+```
+
+#### Production (Docker)
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:5.0
+    container_name: dairy_iot_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: your_secure_password
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongodb_config:/data/configdb
+    command: --auth
+
+volumes:
+  mongodb_data:
+```
+
+### Step 2: Database Initialization
+
+```bash
+# Connect to MongoDB
+mongo
+
+# Create database and user
+use dairy_iot_system
+db.createUser({
+  user: "dairy_user",
+  pwd: "secure_password",
+  roles: [
+    { role: "readWrite", db: "dairy_iot_system" }
+  ]
+})
+```
+
+### Step 3: Index Creation
+
+```javascript
+// Create performance indexes
+use dairy_iot_system
+
+// Sensor readings indexes
+db.sensor_readings.createIndex({"sensor_id": 1, "timestamp": -1})
+db.sensor_readings.createIndex({"timestamp": -1})
+db.sensor_readings.createIndex({"location.farm_id": 1, "location.barn_section": 1})
+
+// TTL Index for automatic data cleanup (7 days)
+db.sensor_readings.createIndex({"timestamp": 1}, {expireAfterSeconds: 604800})
+
+// Sensors collection indexes
+db.sensors.createIndex({"status": 1})
+db.sensors.createIndex({"location.farm_id": 1})
+```
+
+### Step 4: Application Configuration
+
+Update configuration in your Python application:
+
+```python
+# Configuration
+MONGO_URI = "mongodb://dairy_user:secure_password@localhost:27017/dairy_iot_system"
+DATABASE_NAME = "dairy_iot_system"
+SENSOR_READINGS_COLLECTION = "sensor_readings"
+SENSORS_COLLECTION = "sensors"
+
+# For production with authentication
+MONGO_URI = "mongodb://dairy_user:secure_password@your-mongodb-server:27017/dairy_iot_system?authSource=dairy_iot_system"
+```
+
+### Step 5: Data Migration (Optional)
+
+If migrating from existing SQLite:
+
+```python
+import sqlite3
+from pymongo import MongoClient
+from datetime import datetime
+
+def migrate_from_sqlite():
+    # Connect to SQLite
+    sqlite_conn = sqlite3.connect('sensor_data.db')
+    cursor = sqlite_conn.cursor()
+    
+    # Connect to MongoDB
+    mongo_client = MongoClient(MONGO_URI)
+    db = mongo_client[DATABASE_NAME]
+    
+    # Migrate parsed_data table
+    cursor.execute("SELECT * FROM parsed_data")
+    for row in cursor.fetchall():
+        doc = {
+            "sensor_id": "SENSOR_001",
+            "timestamp": datetime.fromisoformat(row[1]),
+            "readings": {
+                "temperature": {"value": row[3], "unit": "celsius"} if row[3] else None,
+                "humidity": {"value": row[4], "unit": "percent"} if row[4] else None,
+                "pressure": {"value": row[5], "unit": "hPa"} if row[5] else None
+            },
+            "metadata": {
+                "message_topic": row[2],
+                "raw_message": row[6],
+                "data_quality": "migrated"
+            }
+        }
+        db.sensor_readings.insert_one(doc)
+    
+    sqlite_conn.close()
+    mongo_client.close()
+```
+
+## 🔧 Configuration Options
+
+### Environment Variables
+```bash
+export MONGO_URI=mongodb://localhost:27017/
+export MONGO_DB=dairy_iot_system
+export MQTT_BROKER=broker.emqx.io
+export MQTT_PORT=1883
+export DATA_RETENTION_DAYS=7
+export LOG_LEVEL=INFO
+```
+
+### Production Configuration
+```python
+import os
+
+# Production settings
+MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/')
+DATABASE_NAME = os.getenv('MONGO_DB', 'dairy_iot_system')
+DATA_RETENTION_DAYS = int(os.getenv('DATA_RETENTION_DAYS', 7))
+
+# Connection pooling for production
+MONGO_CLIENT_OPTIONS = {
+    'maxPoolSize': 50,
+    'minPoolSize': 5,
+    'maxIdleTimeMS': 30000,
+    'serverSelectionTimeoutMS': 5000,
+    'socketTimeoutMS': 20000,
+}
+```
+
+## 📊 Monitoring & Maintenance
+
+### Database Monitoring
+```javascript
+// Check database size
+db.stats()
+
+// Monitor collection sizes
+db.sensor_readings.stats()
+db.sensors.stats()
+
+// Check index usage
+db.sensor_readings.aggregate([{$indexStats: {}}])
+
+// Query performance analysis
+db.sensor_readings.find({"sensor_id": "SENSOR_001"}).explain("executionStats")
+```
+
+### Automated Cleanup
+```python
+# Add to your main application
+import schedule
+import time
+
+def cleanup_old_data():
+    db_handler = MongoDBHandler(MONGO_URI, DATABASE_NAME)
+    if db_handler.connect():
+        db_handler.cleanup_old_data()
+        db_handler.disconnect()
+
+# Schedule cleanup daily at 2 AM
+schedule.every().day.at("02:00").do(cleanup_old_data)
+
+# Run scheduler in background thread
+def run_scheduler():
+    while True:
+        schedule.run_pending()
+        time.sleep(60)
+```
+
+## 🔒 Security Considerations
+
+### Authentication Setup
+```javascript
+// Enable authentication
+use admin
+db.createUser({
+  user: "admin",
+  pwd: "secure_admin_password",
+  roles: ["userAdminAnyDatabase", "readWriteAnyDatabase"]
+})
+
+// Application-specific user
+use dairy_iot_system
+db.createUser({
+  user: "dairy_app",
+  pwd: "app_password",
+  roles: [
+    { role: "readWrite", db: "dairy_iot_system" }
+  ]
+})
+```
+
+### Network Security
+- Use firewall to restrict MongoDB port (27017) access
+- Enable SSL/TLS for production deployments
+- Use VPN or private networks for remote access
+
+## 📈 Scaling Strategies
+
+### Horizontal Scaling (Sharding)
+```javascript
+// Enable sharding on database
+sh.enableSharding("dairy_iot_system")
+
+// Shard the sensor_readings collection
+sh.shardCollection("dairy_iot_system.sensor_readings", {
+  "sensor_id": 1, 
+  "timestamp": 1
+})
+```
+
+### Vertical Scaling
+- Increase RAM for better caching
+- Use SSD storage for faster I/O
+- Optimize connection pooling
+
+### Archival Strategy
+```python
+def archive_old_data():
+    """Archive data older than 30 days to separate collection."""
+    archive_date = datetime.now() - timedelta(days=30)
+    
+    # Move to archive collection
+    pipeline = [
+        {"$match": {"timestamp": {"$lt": archive_date}}},
+        {"$out": "sensor_readings_archive"}
+    ]
+    
+    db.sensor_readings.aggregate(pipeline)
+    
+    # Remove from main collection
+    db.sensor_readings.delete_many({"timestamp": {"$lt": archive_date}})
+```
+
+## 🧪 Testing
+
+### Unit Tests
+```python
+import unittest
+from unittest.mock import patch, MagicMock
+
+class TestMongoDBHandler(unittest.TestCase):
+    def setUp(self):
+        self.db_handler = MongoDBHandler("mongodb://localhost:27017/", "test_db")
+    
+    @patch('pymongo.MongoClient')
+    def test_connection(self, mock_client):
+        mock_client.return_value.admin.command.return_value = True
+        result = self.db_handler.connect()
+        self.assertTrue(result)
+```
+
+### Performance Testing
+```python
+import time
+from concurrent.futures import ThreadPoolExecutor
+
+def performance_test():
+    """Test insertion performance."""
+    start_time = time.time()
+    
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = []
+        for i in range(1000):
+            future = executor.submit(insert_test_data)
+            futures.append(future)
+        
+        for future in futures:
+            future.result()
+    
+    duration = time.time() - start_time
+    print(f"Inserted 1000 records in {duration:.2f} seconds")
+```
+
+## 🚨 Troubleshooting
+
+### Common Issues
+
+1. **Connection Timeout**
+   ```python
+   # Increase timeout values
+   client = MongoClient(uri, serverSelectionTimeoutMS=10000)
+   ```
+
+2. **Memory Issues**
+   ```javascript
+   // Check memory usage
+   db.runCommand({serverStatus: 1}).mem
+   
+   // Optimize queries with proper indexes
+   db.sensor_readings.createIndex({"sensor_id": 1, "timestamp": -1})
+   ```
+
+3. **Slow Queries**
+   ```javascript
+   // Enable profiling
+   db.setProfilingLevel(2, {slowms: 100})
+   
+   // Check slow queries
+   db.system.profile.find().sort({ts: -1}).limit(5)
+   ```
+
+## 📝 Maintenance Checklist
+
+### Daily
+- [ ] Check application logs for errors
+- [ ] Verify data ingestion rates
+- [ ] Monitor disk space usage
+
+### Weekly  
+- [ ] Review query performance
+- [ ] Check index usage statistics
+- [ ] Validate data quality metrics
+
+### Monthly
+- [ ] Update MongoDB version if needed
+- [ ] Review and optimize indexes
+- [ ] Analyze storage growth patterns
+- [ ] Backup and recovery testing
+
+## 🎉 Deployment Verification
+
+After deployment, verify the system is working:
+
+```bash
+# Check MongoDB service
+sudo systemctl status mongod
+
+# Verify collections
+mongo dairy_iot_system
+db.sensor_readings.count()
+db.sensors.count()
+
+# Test application
+python cursor_mongodb.py
+
+# Check logs
+tail -f mqtt_mongodb_client.log
+```
+
+Your MongoDB dairy IoT system is now ready for production use!
