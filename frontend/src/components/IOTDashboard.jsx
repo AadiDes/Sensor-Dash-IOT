@@ -483,28 +483,29 @@ export default function IOTDashboard() {
           <CardContent className="p-6">
             <h3 className="text-xl font-semibold mb-4 text-gray-200">📈 Analytics Summary</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-              <div className="bg-gray-700 p-4 rounded-lg">
-                <h4 className="font-semibold text-blue-400 mb-2">Total Readings</h4>
-                <p className="text-2xl font-bold">{analytics.totalReadings}</p>
-              </div>
-              <div className="bg-gray-700 p-4 rounded-lg">
-                <h4 className="font-semibold text-cyan-400 mb-2">Temperature Range</h4>
-                <p className="text-sm">Min: <span className="font-bold">{analytics.temperature?.min?.toFixed(2) || 'N/A'}°C</span></p>
-                <p className="text-sm">Max: <span className="font-bold">{analytics.temperature?.max?.toFixed(2) || 'N/A'}°C</span></p>
-                <p className="text-sm">Avg: <span className="font-bold">{analytics.temperature?.avg?.toFixed(2) || 'N/A'}°C</span></p>
-              </div>
-              <div className="bg-gray-700 p-4 rounded-lg">
-                <h4 className="font-semibold text-pink-400 mb-2">Humidity Range</h4>
-                <p className="text-sm">Min: <span className="font-bold">{analytics.humidity?.min?.toFixed(2) || 'N/A'}%</span></p>
-                <p className="text-sm">Max: <span className="font-bold">{analytics.humidity?.max?.toFixed(2) || 'N/A'}%</span></p>
-                <p className="text-sm">Avg: <span className="font-bold">{analytics.humidity?.avg?.toFixed(2) || 'N/A'}%</span></p>
-              </div>
-              <div className="bg-gray-700 p-4 rounded-lg">
-                <h4 className="font-semibold text-yellow-400 mb-2">Date Range</h4>
-                <p className="text-xs">From: <span className="font-bold">{analytics.dateRange.start}</span></p>
-                <p className="text-xs">To: <span className="font-bold">{analytics.dateRange.end}</span></p>
-              </div>
-            </div>
+  <div className="p-4 rounded-lg bg-[354066] text-[#1e3a8a] dark:bg-[354066] dark:text-white transition-colors duration-300">
+    <h4 className="font-semibold mb-2">Total Readings</h4>
+    <p className="text-2xl font-bold">{analytics.totalReadings}</p>
+  </div>
+  <div className="p-4 rounded-lg bg-[354066] text-[#1e3a8a] dark:bg-[354066] dark:text-white transition-colors duration-300">
+    <h4 className="font-semibold mb-2">Temperature Range</h4>
+    <p className="text-sm">Min: <span className="font-bold">{analytics.temperature?.min?.toFixed(2) || 'N/A'}°C</span></p>
+    <p className="text-sm">Max: <span className="font-bold">{analytics.temperature?.max?.toFixed(2) || 'N/A'}°C</span></p>
+    <p className="text-sm">Avg: <span className="font-bold">{analytics.temperature?.avg?.toFixed(2) || 'N/A'}°C</span></p>
+  </div>
+  <div className="p-4 rounded-lg bg-[354066] text-[#1e3a8a] dark:bg-[354066] dark:text-white transition-colors duration-300">
+    <h4 className="font-semibold mb-2">Humidity Range</h4>
+    <p className="text-sm">Min: <span className="font-bold">{analytics.humidity?.min?.toFixed(2) || 'N/A'}%</span></p>
+    <p className="text-sm">Max: <span className="font-bold">{analytics.humidity?.max?.toFixed(2) || 'N/A'}%</span></p>
+    <p className="text-sm">Avg: <span className="font-bold">{analytics.humidity?.avg?.toFixed(2) || 'N/A'}%</span></p>
+  </div>
+  <div className="p-4 rounded-lg bg-[354066] text-[#1e3a8a] dark:bg-[354066] dark:text-white transition-colors duration-300">
+    <h4 className="font-semibold mb-2">Date Range</h4>
+    <p className="text-xs">From: <span className="font-bold">{analytics.dateRange.start}</span></p>
+    <p className="text-xs">To: <span className="font-bold">{analytics.dateRange.end}</span></p>
+  </div>
+</div>
+
           </CardContent>
         </Card>
       )}
