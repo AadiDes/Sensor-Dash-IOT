@@ -6,11 +6,12 @@ import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import mqtt from "mqtt";
 import * as XLSX from "xlsx";
+import useDarkMode from "./hooks/useDarkMode";
 
 export default function IOTDashboard() {
-  // State for analytics data (separate from display data)
+  const [theme, toggleTheme] = useDarkMode();
   const [readings, setReadings] = useState([]);
-  const [analyticsData, setAnalyticsData] = useState([]); // Full dataset for analytics
+  const [analyticsData, setAnalyticsData] = useState([]);
   const [sensorId, setSensorId] = useState("device1");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -325,11 +326,49 @@ export default function IOTDashboard() {
   };
 
   return (
-    <div className="w-full min-h-screen h-full p-6 grid gap-8 bg-gray-900 text-gray-100">
-      <h1 className="text-3xl font-bold flex items-center gap-2 mb-2">🌡️ IoT Sensor Dashboard</h1>
+    <div className="w-full min-h-screen h-full p-6 grid gap-8 bg-[#fdf6e3] text-black dark:bg-gray-800 dark:text-gray-100 transition-colors duration-300">
+    <div className="flex justify-between items-center mb-2">
+      <h1 className="text-3xl font-bold flex items-center gap-2 text-black dark:text-gray-100">
+        🌡️ IoT Sensor Dashboard
+      </h1>
+      <button
+        onClick={toggleTheme}
+        className="text-sm px-3 py-1 rounded bg-black hover:bg-gray-900 text-white dark:bg-gray-200 dark:text-black border border-gray-400 dark:border-gray-600"
+      >
+          Toggle {theme === 'dark' ? 'Light' : 'Dark'} Mode
+        </button>
+      </div>
+
+       {/* Additional style override for light mode visibility */}
+       <style>{`
+        .text-gray-200, .text-gray-400 {
+          color:rgb(131, 159, 237) !important; /* navy blue in light mode */
+        }
+        .bg-gray-700 {
+          background-color: #e5e7eb !important; /* lighter input bg */
+        }
+        .border-gray-600 {
+          border-color: #9ca3af !important; /* visible in both modes */
+        }
+        .hover\:bg-gray-700:hover {
+          background-color: #d1d5db !important;
+        }
+        input[type='date'], input[type='text'], input {
+          background-color: #f8f9fa !important; /* light cream box */
+          color: #1e3a8a !important;
+          border: 1px solid #9ca3af !important;
+        }
+        .dark input[type='date'],
+        .dark input[type='text'],
+        .dark input {
+          background-color: #1f2937 !important; /* dark bg */
+          color: #f3f4f6 !important; /* light text */
+          border: 1px solid #4b5563 !important; /* darker border */
+        }
+      `}</style> 
 
       {/* Controls Card */}
-      <Card className="mb-4 bg-gray-800 border-gray-700 w-full">
+      <Card className="mb-4 bg-gray-800 border-grey-700 w-full">
         <CardContent className="p-6 flex flex-col gap-4">
           <div className="flex flex-col md:flex-row md:items-end gap-4 flex-wrap">
             <div className="flex flex-col">
@@ -477,9 +516,9 @@ export default function IOTDashboard() {
       )}
 
       {/* Chart Card */}
-      <Card className="mb-4 bg-gray-800 border-gray-700 w-full">
+      <Card className="mb-4 bg-grey-800 border-gray-700 w-full">
         <CardContent className="p-4">
-          <h2 className="text-xl font-semibold mb-2 text-gray-200">Sensor Data Chart</h2>
+          <h2 className="text-xl font-semibold mb-2 text-grey-200">Sensor Data Chart</h2>
           {loading ? (
             <div className="flex justify-center items-center h-40">
               <svg className="animate-spin h-8 w-8 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -497,30 +536,35 @@ export default function IOTDashboard() {
 
       {/* Data Table Card */}
       <Card className="bg-gray-800 border-gray-700 w-full">
-        <CardContent className="overflow-x-auto">
-          <h2 className="text-xl font-semibold mb-2 text-gray-100">Raw Data Table</h2>
-          <table className="w-full text-sm border border-gray-700 rounded overflow-hidden">
-            <thead>
-              <tr>
-                <th className="text-left text-gray-100 bg-gray-700 px-3 py-2">Timestamp</th>
-                <th className="text-gray-100 bg-gray-700 px-3 py-2">Temp (°C)</th>
-                <th className="text-gray-100 bg-gray-700 px-3 py-2">Humidity (%)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {readings.map((row, idx) => (
-                <tr key={idx} className={
-                  `text-gray-100 ${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-900'} hover:bg-gray-700`
-                }>
-                  <td className="px-3 py-2">{row.timestamp}</td>
-              <td className="px-3 py-2">{row.readings?.temperature?.value?.toFixed(2) || 'N/A'}</td>
-                  <td className="px-3 py-2">{row.readings?.humidity?.value?.toFixed(2) || 'N/A'}</td>
-                </tr>
-              ))}
-            </tbody>
+      <CardContent className="overflow-x-auto pt-2 pb-4">
+        <h2 className="text-xl font-semibold text-gray-100 mb-1">Raw Data Table</h2>
+        <table className="w-full text-sm border border-gray-700 rounded overflow-hidden">
+  <thead>
+    <tr>
+      <th className="text-left px-4 py-2">Timestamp</th>
+      <th className="text-left px-4 py-2">Temp (°C)</th>
+      <th className="text-left px-4 py-2">Humidity (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+  {readings.map((row, idx) => (
+    <tr
+      key={idx}
+      className={`${
+        idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-900'
+      } hover:bg-gray-600 text-gray-100`}
+    >
+      <td className="px-4 py-2">{row.timestamp}</td>
+      <td className="px-4 py-2">{row.readings?.temperature?.value?.toFixed(2) || 'N/A'}</td>
+      <td className="px-4 py-2">{row.readings?.humidity?.value?.toFixed(2) || 'N/A'}</td>
+    </tr>
+  ))}
+</tbody>
+
           </table>
         </CardContent>
       </Card>
     </div>
   );
 }
+    
