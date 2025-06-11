@@ -5,15 +5,20 @@ import { Input } from "./ui/input";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import mqtt from "mqtt";
+import * as XLSX from "xlsx";
 
 export default function IOTDashboard() {
+  // State for analytics data (separate from display data)
   const [readings, setReadings] = useState([]);
+  const [analyticsData, setAnalyticsData] = useState([]); // Full dataset for analytics
   const [sensorId, setSensorId] = useState("device1");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  
+  const [analytics, setAnalytics] = useState(null);
+  const [showAnalytics, setShowAnalytics] = useState(false);
+
   // MQTT client ref to persist across renders
   const mqttClient = useRef(null);
 
@@ -23,7 +28,7 @@ export default function IOTDashboard() {
     const end = new Date();
     end.setDate(end.getDate() + 1);
     const start = new Date();
-    start.setDate(end.getDate() - days);
+    start.setDate(start.getDate() - days);
     const startStr = start.toISOString().slice(0, 10);
     const endStr = end.toISOString().slice(0, 10);
     setStartDate(startStr);
@@ -31,10 +36,45 @@ export default function IOTDashboard() {
     fetchData(sensorId, startStr, endStr);
   };
 
+  // Calculate analytics from readings
+  const calculateAnalytics = (data) => {
+    if (!data || data.length === 0) return null;
+
+    const temps = data.map(r => r.readings?.temperature?.value).filter(v => v != null);
+    const humidities = data.map(r => r.readings?.humidity?.value).filter(v => v != null);
+
+    if (temps.length === 0 && humidities.length === 0) return null;
+
+    const tempStats = temps.length > 0 ? {
+      min: Math.min(...temps),
+      max: Math.max(...temps),
+      avg: temps.reduce((a, b) => a + b, 0) / temps.length,
+      count: temps.length
+    } : null;
+
+    const humidityStats = humidities.length > 0 ? {
+      min: Math.min(...humidities),
+      max: Math.max(...humidities),
+      avg: humidities.reduce((a, b) => a + b, 0) / humidities.length,
+      count: humidities.length
+    } : null;
+
+    return {
+      temperature: tempStats,
+      humidity: humidityStats,
+      totalReadings: data.length,
+      dateRange: {
+        start: data[data.length - 1]?.timestamp,
+        end: data[0]?.timestamp
+      }
+    };
+  };
+
   const fetchData = async (id = sensorId, start = startDate, end = endDate) => {
     setLoading(true);
     setError(null);
     try {
+      // First fetch data for display (with pagination)
       let url = `http://localhost:5000/api/readings/${id}`;
       const params = [];
       if (start) params.push(`start=${start}`);
@@ -46,11 +86,119 @@ export default function IOTDashboard() {
       }
       const data = await response.json();
       setReadings(data);
+
+      // For analytics, fetch ALL data for the selected period (no pagination limit)
+      await fetchAnalyticsData(id, start, end);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchAnalyticsData = async (id = sensorId, start = startDate, end = endDate) => {
+    try {
+      // Fetch all data for analytics by setting a high page_size
+      let url = `http://localhost:5000/api/readings/${id}?page_size=10000`;
+      const params = [];
+      if (start) params.push(`start=${start}`);
+      if (end) params.push(`end=${end}`);
+      if (params.length) url += "&" + params.join("&");
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Analytics API returned status ${response.status}`);
+      }
+      const allData = await response.json();
+
+      // Store complete dataset for analytics and exports
+      setAnalyticsData(allData);
+
+      // Calculate analytics on complete dataset
+      const analyticsResults = calculateAnalytics(allData);
+      setAnalytics(analyticsResults);
+    } catch (err) {
+      console.error("Failed to fetch analytics data:", err);
+      // Fallback to visible data if analytics fetch fails
+      setAnalyticsData(readings);
+      const analyticsResults = calculateAnalytics(readings);
+      setAnalytics(analyticsResults);
+    }
+  };
+
+  // Export functions - now use complete analyticsData instead of limited readings
+  const exportToCSV = () => {
+    const dataToExport = analyticsData.length > 0 ? analyticsData : readings;
+    if (dataToExport.length === 0) {
+      alert("No data to export");
+      return;
+    }
+
+    const csvData = dataToExport.map(reading => ({
+      Timestamp: reading.timestamp,
+      'Sensor ID': reading.sensor_id || sensorId,
+      'Temperature (°C)': reading.readings?.temperature?.value?.toFixed(2) || 'N/A',
+      'Humidity (%)': reading.readings?.humidity?.value?.toFixed(2) || 'N/A'
+    }));
+
+    const csvContent = [
+      Object.keys(csvData[0]).join(','),
+      ...csvData.map(row => Object.values(row).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `sensor_data_${sensorId}_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const exportToExcel = () => {
+    const dataToExport = analyticsData.length > 0 ? analyticsData : readings;
+    if (dataToExport.length === 0) {
+      alert("No data to export");
+      return;
+    }
+
+    // Prepare data for Excel
+    const excelData = dataToExport.map(reading => ({
+      'Timestamp': reading.timestamp,
+      'Sensor ID': reading.sensor_id || sensorId,
+      'Temperature (°C)': reading.readings?.temperature?.value || 'N/A',
+      'Humidity (%)': reading.readings?.humidity?.value || 'N/A'
+    }));
+
+    // Create workbook and worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(excelData);
+
+    // Add analytics sheet if available
+    if (analytics) {
+      const analyticsSheetData = [
+        ['Metric', 'Temperature', 'Humidity'],
+        ['Minimum', analytics.temperature?.min?.toFixed(2) || 'N/A', analytics.humidity?.min?.toFixed(2) || 'N/A'],
+        ['Maximum', analytics.temperature?.max?.toFixed(2) || 'N/A', analytics.humidity?.max?.toFixed(2) || 'N/A'],
+        ['Average', analytics.temperature?.avg?.toFixed(2) || 'N/A', analytics.humidity?.avg?.toFixed(2) || 'N/A'],
+        ['Count', analytics.temperature?.count || 'N/A', analytics.humidity?.count || 'N/A'],
+        ['', '', ''],
+        ['Total Readings', analytics.totalReadings, ''],
+        ['Date Range', `${analytics.dateRange.start} to ${analytics.dateRange.end}`, ''],
+        ['', '', ''],
+        ['Period Selected', startDate && endDate ? `${startDate} to ${endDate}` : 'All Data', '']
+      ];
+
+      const analyticsWs = XLSX.utils.aoa_to_sheet(analyticsSheetData);
+      XLSX.utils.book_append_sheet(wb, analyticsWs, 'Analytics');
+    }
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Sensor Data');
+
+    // Save file
+    XLSX.writeFile(wb, `sensor_data_${sensorId}_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
   useEffect(() => {
@@ -102,7 +250,13 @@ export default function IOTDashboard() {
         sensor_id: topic.split("/").pop()
       };
       // Add to readings (prepend, keep max 100)
-      setReadings(prev => [newReading, ...prev].slice(0, 100));
+      setReadings(prev => {
+        const updated = [newReading, ...prev].slice(0, 100);
+        // Update analytics for real-time data
+        const newAnalytics = calculateAnalytics(updated);
+        setAnalytics(newAnalytics);
+        return updated;
+      });
     });
 
     return () => {
@@ -173,24 +327,26 @@ export default function IOTDashboard() {
   return (
     <div className="w-full min-h-screen h-full p-6 grid gap-8 bg-gray-900 text-gray-100">
       <h1 className="text-3xl font-bold flex items-center gap-2 mb-2">🌡️ IoT Sensor Dashboard</h1>
+
+      {/* Controls Card */}
       <Card className="mb-4 bg-gray-800 border-gray-700 w-full">
         <CardContent className="p-6 flex flex-col gap-4">
           <div className="flex flex-col md:flex-row md:items-end gap-4 flex-wrap">
             <div className="flex flex-col">
               <label className="font-semibold mb-1 text-gray-200">Sensor ID</label>
-              <form
-                onSubmit={e => {
-                  e.preventDefault();
-                  fetchData(sensorId, startDate, endDate);
-                }}
-              >
+              <div>
                 <Input
                   placeholder="Enter Sensor ID"
                   value={sensorId}
                   onChange={(e) => setSensorId(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      fetchData(sensorId, startDate, endDate);
+                    }
+                  }}
                   className="min-w-[180px] bg-gray-700 border-gray-600 text-gray-100"
                 />
-              </form>
+              </div>
             </div>
             <div className="flex flex-col">
               <label className="font-semibold mb-1 text-gray-200">Date Range</label>
@@ -245,12 +401,82 @@ export default function IOTDashboard() {
         </CardContent>
       </Card>
 
+      {/* Export & Analytics Controls */}
+      <Card className="mb-4 bg-gray-800 border-gray-700 w-full">
+        <CardContent className="p-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex gap-2 items-center">
+              <h3 className="text-lg font-semibold text-gray-200">Data Export & Analytics</h3>
+              <span className="text-sm text-gray-400">
+                ({readings.length} displayed, {analyticsData.length > 0 ? analyticsData.length : readings.length} total for analysis)
+              </span>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              <Button
+                onClick={() => setShowAnalytics(!showAnalytics)}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                disabled={readings.length === 0}
+              >
+                📊 {showAnalytics ? 'Hide' : 'Show'} Analytics
+              </Button>
+              <Button
+                onClick={exportToCSV}
+                className="bg-green-600 hover:bg-green-700 text-white"
+                disabled={readings.length === 0}
+              >
+                📄 Export CSV
+              </Button>
+              <Button
+                onClick={exportToExcel}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                disabled={readings.length === 0}
+              >
+                📊 Export Excel
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Analytics Card */}
+      {showAnalytics && analytics && (
+        <Card className="mb-4 bg-gray-800 border-gray-700 w-full">
+          <CardContent className="p-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-200">📈 Analytics Summary</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <h4 className="font-semibold text-blue-400 mb-2">Total Readings</h4>
+                <p className="text-2xl font-bold">{analytics.totalReadings}</p>
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <h4 className="font-semibold text-cyan-400 mb-2">Temperature Range</h4>
+                <p className="text-sm">Min: <span className="font-bold">{analytics.temperature?.min?.toFixed(2) || 'N/A'}°C</span></p>
+                <p className="text-sm">Max: <span className="font-bold">{analytics.temperature?.max?.toFixed(2) || 'N/A'}°C</span></p>
+                <p className="text-sm">Avg: <span className="font-bold">{analytics.temperature?.avg?.toFixed(2) || 'N/A'}°C</span></p>
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <h4 className="font-semibold text-pink-400 mb-2">Humidity Range</h4>
+                <p className="text-sm">Min: <span className="font-bold">{analytics.humidity?.min?.toFixed(2) || 'N/A'}%</span></p>
+                <p className="text-sm">Max: <span className="font-bold">{analytics.humidity?.max?.toFixed(2) || 'N/A'}%</span></p>
+                <p className="text-sm">Avg: <span className="font-bold">{analytics.humidity?.avg?.toFixed(2) || 'N/A'}%</span></p>
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <h4 className="font-semibold text-yellow-400 mb-2">Date Range</h4>
+                <p className="text-xs">From: <span className="font-bold">{analytics.dateRange.start}</span></p>
+                <p className="text-xs">To: <span className="font-bold">{analytics.dateRange.end}</span></p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {error && (
         <div className="bg-red-900 border border-red-700 text-red-200 px-4 py-3 rounded">
           Error: {error}
         </div>
       )}
 
+      {/* Chart Card */}
       <Card className="mb-4 bg-gray-800 border-gray-700 w-full">
         <CardContent className="p-4">
           <h2 className="text-xl font-semibold mb-2 text-gray-200">Sensor Data Chart</h2>
@@ -269,6 +495,7 @@ export default function IOTDashboard() {
         </CardContent>
       </Card>
 
+      {/* Data Table Card */}
       <Card className="bg-gray-800 border-gray-700 w-full">
         <CardContent className="overflow-x-auto">
           <h2 className="text-xl font-semibold mb-2 text-gray-100">Raw Data Table</h2>
@@ -286,7 +513,7 @@ export default function IOTDashboard() {
                   `text-gray-100 ${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-900'} hover:bg-gray-700`
                 }>
                   <td className="px-3 py-2">{row.timestamp}</td>
-                  <td className="px-3 py-2">{row.readings?.temperature?.value?.toFixed(2) || 'N/A'}</td>
+              <td className="px-3 py-2">{row.readings?.temperature?.value?.toFixed(2) || 'N/A'}</td>
                   <td className="px-3 py-2">{row.readings?.humidity?.value?.toFixed(2) || 'N/A'}</td>
                 </tr>
               ))}

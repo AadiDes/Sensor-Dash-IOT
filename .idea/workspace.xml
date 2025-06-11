@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="399a8767-9a74-4855-8a88-2d7fc88b9330" name="Changes" comment="" />
+    <list default="true" id="399a8767-9a74-4855-8a88-2d7fc88b9330" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/mongo_ping.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mongo_ping.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/mqtt_to_mongo.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mqtt_to_mongo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/sensor_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/sensor_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/sensor_log.csv" beforeDir="false" afterPath="$PROJECT_DIR$/backend/sensor_log.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/IOTDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/IOTDashboard.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +26,12 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -25,20 +40,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.connect.executor": "Run",
-    "Python.cursor_current.executor": "Run",
-    "Python.flask_api.executor": "Run",
-    "Python.mongo_ping.executor": "Run",
-    "Python.mqtt_to_mongo.executor": "Run",
-    "Python.sensor.executor": "Run",
-    "Python.test.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/Aadi",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.connect.executor&quot;: &quot;Run&quot;,
+    &quot;Python.cursor_current.executor&quot;: &quot;Run&quot;,
+    &quot;Python.flask_api.executor&quot;: &quot;Run&quot;,
+    &quot;Python.mongo_ping.executor&quot;: &quot;Run&quot;,
+    &quot;Python.mqtt_to_mongo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.sensor.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Aadi&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Aadi\PycharmProjects\PythonProject1\frontend\src\components" />

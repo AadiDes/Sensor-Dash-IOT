@@ -16,6 +16,7 @@ Run:
 
 import warnings
 import time
+import ssl
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -54,11 +55,6 @@ JSON_LOG_FILE = "sensor_data.json"
 MONGO_URI = "mongodb+srv://AadiDes:manager@clustera.ls7ppiu.mongodb.net/?retryWrites=true&w=majority&appName=ClusterA"
 DB_NAME = "iot_database"
 
-if not MONGO_URI:
-    logger = logging.getLogger(__name__)
-    logger.error("MONGODB_URI environment variable not set. Exiting.")
-    sys.exit(1)
-
 # ---------------------- Logging Setup ---------------------- #
 logging.basicConfig(
     level=logging.INFO,
@@ -70,27 +66,87 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
 # ---------------------- MongoDB Setup ---------------------- #
+def connect_to_mongodb():
+    """Connect to MongoDB with multiple fallback options for SSL issues"""
+
+    # Try different connection configurations
+    connection_configs = [
+        # Config 1: Standard SSL with certifi
+        {
+            "tls": True,
+            "tlsCAFile": certifi.where(),
+            "serverSelectionTimeoutMS": 10000,
+            "connectTimeoutMS": 10000,
+            "socketTimeoutMS": 10000,
+        },
+        # Config 2: SSL with insecure flag (not recommended for production)
+        {
+            "tls": True,
+            "tlsAllowInvalidCertificates": True,
+            "tlsAllowInvalidHostnames": True,
+            "serverSelectionTimeoutMS": 10000,
+            "connectTimeoutMS": 10000,
+            "socketTimeoutMS": 10000,
+        },
+        # Config 3: Disable SSL certificate verification
+        {
+            "tls": True,
+            "tlsInsecure": True,
+            "serverSelectionTimeoutMS": 10000,
+            "connectTimeoutMS": 10000,
+            "socketTimeoutMS": 10000,
+        },
+        # Config 4: Manual SSL context
+        {
+            "tls": True,
+            "tlsCAFile": None,
+            "ssl_cert_reqs": ssl.CERT_NONE,
+            "serverSelectionTimeoutMS": 10000,
+            "connectTimeoutMS": 10000,
+            "socketTimeoutMS": 10000,
+        }
+    ]
+
+    for i, config in enumerate(connection_configs, 1):
+        try:
+            logger.info(f"Attempting MongoDB connection with config {i}...")
+            client_mongo = MongoClient(MONGO_URI, **config)
+
+            # Test the connection
+            client_mongo.admin.command("ping")
+            logger.info(f"✅ Successfully connected to MongoDB using config {i}")
+            return client_mongo
+
+        except Exception as e:
+            logger.warning(f"Config {i} failed: {str(e)}")
+            if i < len(connection_configs):
+                logger.info(f"Trying next configuration...")
+            continue
+
+    # If all configs fail, raise the last exception
+    raise Exception("All MongoDB connection attempts failed")
+
+
 try:
-    client_mongo = MongoClient(
-        MONGO_URI,
-        tls=True,
-        tlsCAFile=certifi.where(),
-        serverSelectionTimeoutMS=5000
-    )
-    client_mongo.admin.command("ping")
+    client_mongo = connect_to_mongodb()
     db = client_mongo[DB_NAME]
     readings_col = db["sensor_readings"]
     sensors_col = db["sensors"]
-    print("✅ Connected to MongoDB")
-except errors.ServerSelectionTimeoutError as e:
-    print("❌ Connection failed:", e)
-    exit(1)
+    logger.info("✅ MongoDB connection established successfully")
+except Exception as e:
+    logger.error(f"❌ Failed to connect to MongoDB: {e}")
+    sys.exit(1)
 
 
 def init_mongodb():
     """Create useful indexes if they do not already exist."""
-    readings_col.create_index([("sensor_id", 1), ("timestamp", -1)], background=True)
+    try:
+        readings_col.create_index([("sensor_id", 1), ("timestamp", -1)], background=True)
+        logger.info("✅ MongoDB indexes created/verified")
+    except Exception as e:
+        logger.warning(f"Index creation failed: {e}")
 
 
 # ---------------------- Sensor Data Parsing ---------------------- #
@@ -121,8 +177,9 @@ def safe_insert(doc, retries=3, delay=2):
             logger.info(f"[MongoDB] Inserted reading for {doc.get('sensor_id', 'unknown')}")
             return True
         except Exception as exc:
-            logger.error(f"[MongoDB] Insert failed (attempt {attempt+1}): {exc}")
-            time.sleep(delay)
+            logger.error(f"[MongoDB] Insert failed (attempt {attempt + 1}): {exc}")
+            if attempt < retries - 1:
+                time.sleep(delay)
     logger.error("[MongoDB] All insert attempts failed.")
     return False
 
@@ -139,7 +196,7 @@ def build_reading_document(topic: str, raw_message: str) -> dict:
         temp = readings["Temperature"]
         hum = readings["Humidity"]
         if temp is None or hum is None:
-            logger.warning(f"Invalid r`eading: temp={temp}, hum={hum}, topic={topic}, message={raw_message}")
+            logger.warning(f"Invalid reading: temp={temp}, hum={hum}, topic={topic}, message={raw_message}")
             return None
         doc = {
             "timestamp": system_time,
@@ -149,9 +206,12 @@ def build_reading_document(topic: str, raw_message: str) -> dict:
                 "humidity": {"value": hum, "unit": "%"}
             }
         }
-        sensor = sensors_col.find_one({"sensor_id": sensor_id})
-        if sensor:
-            doc["location"] = sensor.get("location", {})
+        try:
+            sensor = sensors_col.find_one({"sensor_id": sensor_id})
+            if sensor:
+                doc["location"] = sensor.get("location", {})
+        except Exception as e:
+            logger.warning(f"Could not fetch sensor metadata: {e}")
         return doc
     except Exception as e:
         logger.error(f"Error building document: {str(e)}")
@@ -231,32 +291,34 @@ def on_disconnect(client, userdata, rc, properties=None):
 # ---------------------- Main ---------------------- #
 
 def main():
-    init_mongodb()
-    # Use MQTT v3.1.1 instead of v5 for better compatibility
-    client = mqtt.Client(client_id="AadiDes", protocol=mqtt.MQTTv311, clean_session=True)
-
-    # Set authentication credentials
-    client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
-
-    client.on_connect = on_connect
-    client.on_message = on_message
-    client.on_disconnect = on_disconnect
-    # Enable automatic reconnect with more conservative settings
-    client.enable_logger(logger)
-    client.reconnect_delay_set(min_delay=1, max_delay=60)
-
-    # Set maximum number of queued messages
-    client.max_inflight_messages_set(10)
-
-    # Connect to the broker with increased keepalive and connection timeout
     try:
+        init_mongodb()
+        # Use MQTT v3.1.1 instead of v5 for better compatibility
+        client = mqtt.Client(client_id="AadiDes", protocol=mqtt.MQTTv311, clean_session=True)
+
+        # Set authentication credentials
+        client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
+
+        client.on_connect = on_connect
+        client.on_message = on_message
+        client.on_disconnect = on_disconnect
+        # Enable automatic reconnect with more conservative settings
+        client.enable_logger(logger)
+        client.reconnect_delay_set(min_delay=1, max_delay=60)
+
+        # Set maximum number of queued messages
+        client.max_inflight_messages_set(10)
+
+        # Connect to the broker with increased keepalive and connection timeout
         logger.info("[CONNECTING] Attempting to connect to %s:%s", BROKER, PORT)
         # Add connection timeout and retry settings
         client.connect(BROKER, PORT, keepalive=120, bind_address="")
         logger.info("[START] MQTT loop")
         client.loop_forever()
+    except KeyboardInterrupt:
+        logger.info("Shutting down gracefully...")
     except Exception as e:
-        logger.error("[ERROR] Connection failed: %s", str(e))
+        logger.error("[ERROR] Application failed: %s", str(e))
         sys.exit(1)
 
 
