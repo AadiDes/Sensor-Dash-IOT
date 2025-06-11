@@ -6688,5 +6688,20 @@
       }
     },
     "_id": "6849167df025c40bc24f7594"
+  },
+  {
+    "timestamp": "2025-06-11 11:09:34",
+    "sensor_id": "device1",
+    "readings": {
+      "temperature": {
+        "value": 30.34,
+        "unit": "C"
+      },
+      "humidity": {
+        "value": 70.37,
+        "unit": "%"
+      }
+    },
+    "_id": "68491696f025c40bc24f7595"
   }
 ]
