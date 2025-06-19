@@ -5,8 +5,9 @@ from flask import Flask, jsonify
 from pymongo import MongoClient
 from flask_cors import CORS
 from bson import ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
+
 
 app = Flask(__name__)
 CORS(app)  # Allow all origins (you can restrict later)
@@ -27,11 +28,20 @@ except Exception as e:
     raise
 
 # --- Convert ObjectId and datetime to string ---
+from datetime import datetime
+
 def clean_doc(doc):
     doc["_id"] = str(doc["_id"])
     if "timestamp" in doc:
-        doc["timestamp"] = doc["timestamp"].strftime("%Y-%m-%d %H:%M:%S")
+        try:
+            if isinstance(doc["timestamp"], float):  # Unix time
+                doc["timestamp"] = datetime.fromtimestamp(doc["timestamp"]).strftime("%Y-%m-%d %H:%M:%S")
+            elif hasattr(doc["timestamp"], "strftime"):
+                doc["timestamp"] = doc["timestamp"].strftime("%Y-%m-%d %H:%M:%S")
+        except:
+            doc["timestamp"] = str(doc["timestamp"])
     return doc
+
 
 # --- Routes ---
 @app.route("/api/readings", methods=["GET"])
@@ -42,7 +52,7 @@ def get_all_readings():
         page_size = int(request.args.get("page_size", 50))
         skip = (page - 1) * page_size
         docs = collection.find().sort("timestamp", -1).skip(skip).limit(page_size)
-        logger.info(f"Fetched {docs.count()} readings (page {page})")
+        logger.info(f"Fetched {collection.count_documents({})} readings (page {page})")
         return jsonify([clean_doc(doc) for doc in docs])
     except Exception as e:
         logger.error(f"Error in get_all_readings: {e}")
@@ -56,7 +66,36 @@ def get_latest_reading(sensor_id):
             return jsonify(clean_doc(doc))
         return jsonify({"error": "Sensor not found"}), 404
     except Exception as e:
+        return jsonify({"error": str(e)}), 500\
+
+@app.route("/api/sensors", methods=["GET"])
+def get_sensor_list():
+    try:
+        # Step 1: Fetch distinct sensor IDs with valid readings
+        sensor_ids = collection.distinct("sensor_id", {
+            "sensor_id": {"$nin": ["", None, "unknown", "temp", "sub"]},
+            "readings": {"$exists": True, "$ne": {}}
+        })
+
+        # Step 2: Clean and filter them
+        valid_ids = []
+        blacklist = {"", "unknown", "temp", "sub","sensor_02","sensor_03","sensor_06","sensor0","sensor1", "null"}
+        for s in sensor_ids:
+            if (
+                isinstance(s, str)
+                and (cleaned := s.strip())
+                and cleaned.lower() not in blacklist
+                and cleaned.isprintable()
+            ):
+                valid_ids.append(cleaned)
+
+        # Step 3: Sort and return
+        return jsonify(sorted(set(valid_ids)))
+
+    except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
 
 def parse_date(date_str):
     """Parse YYYY-MM-DD or full timestamp into a datetime object."""
@@ -80,6 +119,14 @@ def get_sensor_readings(sensor_id):
         page_size = int(request.args.get("page_size", 50))
         skip = (page - 1) * page_size
         query = {"sensor_id": sensor_id}
+        from datetime import timezone
+        min_age = datetime.now(timezone.utc) - timedelta(seconds=2)
+
+        query["timestamp"] = {
+            "$lte": min_age,
+            **query.get("timestamp", {})  # merge if already exists
+        }
+
         if start_str:
             start = parse_date(start_str)
             if start:

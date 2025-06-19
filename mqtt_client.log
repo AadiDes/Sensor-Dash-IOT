@@ -123,3 +123,24 @@
 2025-06-10 11:17:48,741 - INFO - [2025-06-10 11:17:48] Data on 'TEMP/SUB/': {"T":"30.13 C","H":"66.53 %"}
 2025-06-10 11:18:12,949 - INFO - [2025-06-10 11:18:12] Data on 'TEMP/SUB/': {"T":"30.13 C","H":"66.49 %"}
 2025-06-10 11:18:37,069 - INFO - [2025-06-10 11:18:37] Data on 'TEMP/SUB/': {"T":"30.13 C","H":"66.46 %"}
+2025-06-17 16:14:19,037 - INFO - Attempting MongoDB connection with config 1...
+2025-06-17 16:14:24,340 - INFO - ✅ Successfully connected to MongoDB using config 1
+2025-06-17 16:14:24,340 - INFO - ✅ MongoDB connection established successfully
+2025-06-17 16:14:24,503 - INFO - ✅ MongoDB indexes created/verified
+2025-06-17 16:14:24,503 - INFO - [CONNECTING] Attempting to connect to broker.emqx.io:1883
+2025-06-17 16:14:25,106 - INFO - [START] MQTT loop
+2025-06-17 16:14:25,570 - INFO - [SUCCESS] Connected to broker.emqx.io:1883
+2025-06-17 16:14:25,570 - INFO - [SUBSCRIBED] TEMP/SUB/# with QoS 1
+2025-06-17 16:14:27,127 - WARNING - [DISCONNECTED] Unexpected disconnection. Reason code: 7 - The connection was lost.
+2025-06-17 16:14:29,125 - INFO - [SUCCESS] Connected to broker.emqx.io:1883
+2025-06-17 16:14:29,125 - INFO - [SUBSCRIBED] TEMP/SUB/# with QoS 1
+2025-06-17 16:14:30,410 - INFO - [2025-06-17 16:14:30] Data on 'TEMP/SUB/': {"T":"29.40 C","H":"73.18 %","date time":"2025-06-17 16:12:28"}
+2025-06-17 16:14:30,411 - WARNING - Invalid sensor_id: . Skipping.
+2025-06-17 16:14:30,411 - WARNING - Invalid sensor_id: . Skipping.
+2025-06-17 16:14:30,411 - WARNING - ⚠️ Skipped insert due to invalid data on topic TEMP/SUB/
+2025-06-17 16:14:30,866 - WARNING - [DISCONNECTED] Unexpected disconnection. Reason code: 7 - The connection was lost.
+2025-06-17 16:14:32,869 - INFO - [SUCCESS] Connected to broker.emqx.io:1883
+2025-06-17 16:14:32,870 - INFO - [SUBSCRIBED] TEMP/SUB/# with QoS 1
+2025-06-17 16:14:33,585 - INFO - [2025-06-17 16:14:33] Data on 'TEMP/SUB/simdevice': {"T": "21.75 C", "H": "49.43 %", "date time": "2025-06-17 16:14:33"}
+2025-06-17 16:14:33,694 - ERROR - Caught exception in on_message: name 'safe_insert' is not defined
+2025-06-17 16:14:33,695 - ERROR - [ERROR] Application failed: name 'safe_insert' is not defined
