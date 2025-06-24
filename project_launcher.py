@@ -1,62 +1,57 @@
 import os
 import subprocess
 import time
-import platform
 import psutil
 
-# --- Absolute paths ---
+# === Absolute Paths ===
 BACKEND_DIR = os.path.join(os.getcwd(), "backend")
 FRONTEND_DIR = os.path.join(os.getcwd(), "frontend")
 
-# --- Commands ---
-mqtt_command = ["python", "mqtt_manager.py", "--simulate", "--subscribe"]
-other_backend_scripts = [
-    ["python", "mqtt_to_mongo.py"],
+# === Commands ===
+BACKEND_COMMANDS = [
+    ["python", "mqtt_manager.py", "--simulate", "--subscribe"],
     ["python", "flask_api.py"]
 ]
 
-# --- Keywords for identifying project processes ---
-process_keywords = [
+FRONTEND_COMMAND = ["npm", "start"]
+
+# === Process Matching Keywords ===
+PROCESS_KEYWORDS = [
     "mqtt_manager.py",
-    "mqtt_to_mongo.py",
     "flask_api.py",
-    "npm", "node",  # React frontend
+    "npm", "node"
 ]
 
-# --- Run a command in a new terminal window ---
+# === Launch Command in New Terminal ===
 def run_in_terminal(command, cwd):
     if os.name == "nt":
         subprocess.Popen(["start", "cmd", "/k"] + command, cwd=cwd, shell=True)
     else:
         subprocess.Popen(["gnome-terminal", "--"] + command, cwd=cwd)
 
-# --- Start all components ---
+# === Start All Services ===
 def start_project():
-    print("🚀 Launching backend processes...")
-    run_in_terminal(mqtt_command, BACKEND_DIR)
-    for cmd in other_backend_scripts:
+    print("🚀 Starting backend services...")
+    for cmd in BACKEND_COMMANDS:
         run_in_terminal(cmd, BACKEND_DIR)
-        time.sleep(2)
+        time.sleep(1)
 
     print("🚀 Launching React frontend...")
-    if os.name == "nt":
-        subprocess.Popen(["start", "cmd", "/k", "npm start"], cwd=FRONTEND_DIR, shell=True)
-    else:
-        subprocess.Popen(["gnome-terminal", "--", "npm", "start"], cwd=FRONTEND_DIR)
+    run_in_terminal(FRONTEND_COMMAND, FRONTEND_DIR)
 
-    print("✅ All components launched.")
+    print("✅ Project launched successfully.")
 
-# --- Stop all matching project processes ---
+# === Stop All Services ===
 def stop_project():
-    print("🛑 Stopping project...")
+    print("🛑 Stopping project processes...")
     found = False
 
     for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
         try:
             cmdline = " ".join(proc.info['cmdline']) if isinstance(proc.info['cmdline'], list) else ""
-            name = proc.info['name']
+            name = proc.info['name'].lower()
 
-            if name.lower() in ["cmd.exe", "python.exe", "node.exe", "npm"] and any(k in cmdline for k in process_keywords):
+            if any(keyword in cmdline for keyword in PROCESS_KEYWORDS):
                 print(f"✔ Terminating PID {proc.pid} - {name}")
                 proc.terminate()
                 found = True
@@ -64,12 +59,12 @@ def stop_project():
             continue
 
     if not found:
-        print("⚠️ No matching project processes found. (Already stopped?)")
+        print(" No matching project processes found.")
     else:
         time.sleep(2)
-        print("✅ All project processes terminated.")
+        print("✅All project processes terminated.")
 
-# --- CLI Menu ---
+# === CLI Prompt ===
 if __name__ == "__main__":
     print("\nIoT Project Launcher")
     print("=======================")

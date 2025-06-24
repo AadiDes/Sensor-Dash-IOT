@@ -6,6 +6,7 @@ import threading
 import argparse
 import logging
 import sys
+import dateutil
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
