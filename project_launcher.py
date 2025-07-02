@@ -10,7 +10,7 @@ FRONTEND_DIR = os.path.join(os.getcwd(), "frontend")
 # === Commands ===
 BACKEND_COMMANDS = [
     ["python", "mqtt_manager.py", "--simulate", "--subscribe"],
-    ["python", "flask_api.py"]
+    ["python", "app.py"]
 ]
 
 FRONTEND_COMMAND = ["npm", "start"]
@@ -18,7 +18,7 @@ FRONTEND_COMMAND = ["npm", "start"]
 # === Process Matching Keywords ===
 PROCESS_KEYWORDS = [
     "mqtt_manager.py",
-    "flask_api.py",
+    "app.py",
     "npm", "node"
 ]
 
