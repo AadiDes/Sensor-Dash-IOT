@@ -4,3 +4,5 @@ pymongo==4.6.1
 certifi==2024.2.2
 python-dotenv==1.0.1 
 python-dateutil
+psutil
+paho-mqtt
