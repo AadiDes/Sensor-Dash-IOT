@@ -1,9 +1,14 @@
 from pymongo import MongoClient
 import certifi
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
 
 try:
     client = MongoClient(
-        "mongodb+srv://AadiDes:manager@clustera.ls7ppiu.mongodb.net/?retryWrites=true&w=majority&tls=true",
+        os.environ.get("MONGODB_URI"),
         tlsCAFile=certifi.where()
     )
 

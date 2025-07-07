@@ -2,13 +2,18 @@ import json
 import csv
 import paho.mqtt.client as mqtt
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '.env'))
 
 # ---------------------- Configuration ---------------------- #
-BROKER = "broker.emqx.io"
-PORT = 1883
-LOG_TO_CSV = True
-TOPIC = "TEMP/SUB/"
-CSV_FILE = "sensor_log.csv"
+BROKER = os.environ.get("BROKER", "broker.emqx.io")
+PORT = int(os.environ.get("PORT", 1883))
+LOG_TO_CSV = os.environ.get("LOG_TO_CSV", "True") == "True"
+TOPIC = os.environ.get("TOPIC", "TEMP/SUB/")
+CSV_FILE = os.environ.get("CSV_FILE", "sensor_log.csv")
 # ----------------------------------------------------------- #
 
 # ----------------- MQTT v5 Callback API ------------------ #
