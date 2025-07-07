@@ -1,5 +1,23 @@
 # 📘 Cloud-Based IoT Data Analytics Dashboard
 
+## 📸 Live Screenshots
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/c306ad57-5ab3-4652-ade8-ed34e609e4bb" alt="Screenshot 1" width="350"/>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/476e2d34-f7e6-4818-9271-463b1481c539" alt="Screenshot 2" width="350"/>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <img src="https://github.com/user-attachments/assets/1dc116a2-973b-4544-b339-f1e4a02dc272" alt="Screenshot 3" width="350"/>
+    </td>
+  </tr>
+</table>
+
 ### Document Number
 
 SCD/DOC/IOT/CSE-PS1/20250619-01
